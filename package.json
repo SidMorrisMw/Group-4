@@ -1,0 +1,23 @@
+{
+  "name": "group-4",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000G\u0000r\u0000o\u0000u\u0000p\u0000-\u00004\u0000\r\u0000 \u0000",
+  "main": "charts.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SidMorrisMw/Group-4.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SidMorrisMw/Group-4/issues"
+  },
+  "homepage": "https://github.com/SidMorrisMw/Group-4#readme",
+  "devDependencies": {
+    "vite": "^7.1.5"
+  }
+}

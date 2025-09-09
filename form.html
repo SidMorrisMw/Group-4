@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/site.css" />
+    <title>Form</title>
+  </head>
+  <body>
+    <div class="header">
+      <div class="toggle">
+        <a id="toggle-nav"><i class="fa fa-navicon cog"></i></a>
+      </div>
+    </div>
+    <div class="container">
+      <div class="sidebar" id="sidebar">
+        <a href="dashboard.html"><i class="fa fa-home"></i> Dashboard</a>
+        <a href="form.html"><i class="fa fa-shopping-cart"></i> Forms</a>
+        <a href="tables.html"><i class="fa fa-shopping-bag"></i> Tables</a>
+      </div>
+      <div class="content">
+        <div class="left">
+          <h3>Product Registration</h3>
+          <div class="section-container">
+            <div class="section-header">Enter product details</div>
+            <div class="section-content">
+
+              <form id="productForm">
+                <label class="label" for="product">Product Name</label>
+                <input type="text" id="product" name="product" required minlength="5" maxlength="50" /><br />
+                <label class="label" for="price">Price</label>
+                <input type="number" id="price" name="price" required min="0.01" step="0.01" /><br />
+                <label class="label" for="quantity">Quantity</label>
+                <input name="quantity" id="quantity" type="number" required min="0.01" step="0.01" />
+                <label class="label" for="description">Description</label>
+                <textarea rows="6" name="description" id="description" required minlength="5" maxlength="200"></textarea>
+                <button class="form-button" id="save" type="submit">Save</button>
+                </form>
+            </div>
+          </div>
+        </div>
+        <div class="right"></div>
+      </div>
+    </div>
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+        <span class="close" id="span">&times;</span>
+        <h3>Message</h3>
+        <p>Edit me for success and error messages</p>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $("document").ready(() => {
+        $("#toggle-nav").click(() =>{
+            $("#sidebar").toggleClass("active");
+        });
+      });
+      
+      $("document").ready(() => {
+        // Form validation and submission
+        $("#productForm").on("submit", function(e) {
+        e.preventDefault();
+
+        // Basic validation
+        const product = $("#product").val();
+        const price = $("#price").val();
+        const quantity = $("#quantity").val();
+        const description = $("#description").val();
+
+        let isValid = true;
+
+        // Reset error states
+        $("input, textarea").removeClass("error");
+
+        // Validate product name
+        if (!product || product.length < 5 || product.length > 50) {
+        $("#product").addClass("error");
+        isValid = false;
+        }
+
+        // Validate price
+        if (!price || parseFloat(price) <= 0) {
+        $("#price").addClass("error");
+        isValid = false;
+        }
+
+        // Validate quantity
+        if (!quantity || parseFloat(quantity) <= 0) {
+        $("#quantity").addClass("error");
+        isValid = false;
+        }
+
+        // Validate description
+        if (!description || description.length < 5 || description.length > 200) {
+        $("#description").addClass("error");
+        isValid = false;
+        }
+
+        if (!isValid) {
+        $("#myModal p").text("Please fix the validation errors.");
+        $("#myModal").css("display", "block");
+        return;
+        }
+
+        // Submit the form
+        const formData = {
+        name: product,
+        price: parseFloat(price),
+        quantity: parseFloat(quantity),
+        description: description
+        };
+
+        fetch('http://localhost:3000/products/', {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+        $("#myModal p").text(data.message || "Product added successfully!");
+        $("#myModal").css("display", "block");
+        $("#productForm")[0].reset();
+        })
+        .catch(error => {
+        $("#myModal p").text("Error: " + error.message);
+        $("#myModal").css("display", "block");
+        });
+        });
+
+        $("#span").click((e) => {
+        e.preventDefault();
+        $("#myModal").css("display", "none");
+        });
+        });
+</script>
+  </body>
+</html>
