@@ -53,34 +53,23 @@
             </div>
           </div>
         </div>
-        <div class="charts-container">
-          <!-- This is the chart content section-->
-          <h4>Implement here..</h4>
+
+        
+              <div class="charts-container">
+          <canvas id="lineChart"></canvas>
+          <canvas id="pieChart"></canvas>
+          <canvas id="barChart"></canvas>
+          <canvas id="scatterChart"></canvas>
         </div>
       </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="charts.js"></script>
     <script>
       $("document").ready(() => {
-        $("#toggle-nav").click(() =>{
-            $("#sidebar").toggleClass("active");
-        });
+        // Your js here
       });
-
-      $("document").ready(() => {
-        // Fetch dashboard stats
-        fetch('http://localhost:3000/dash_stats')
-        .then(response => response.json())
-        .then(data => {
-        // Update the card values
-        $(".summary-content h2").eq(0).text(data.users || 0);
-        $(".summary-content h2").eq(1).text(data.products || 0);
-        $(".summary-content h2").eq(2).text(data.sales || 0);
-        $(".summary-content h2").eq(3).text(data.profit || 0);
-        })
-        .catch(error => console.error('Error fetching dashboard stats:', error));
-    });
     </script>
   </body>
 </html>

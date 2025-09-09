@@ -3,7 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel = "stylesheet" href="site.css" >
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
@@ -14,8 +13,8 @@
       href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
       rel="stylesheet"
     />
-    <title>Product Form</title>
-    
+    <link rel="stylesheet" href="./css/site.css" />
+    <title>Form</title>
   </head>
   <body>
     <div class="header">
@@ -26,7 +25,7 @@
     <div class="container">
       <div class="sidebar" id="sidebar">
         <a href="dashboard.html"><i class="fa fa-home"></i> Dashboard</a>
-        <a href="form.html" class="active"><i class="fa fa-shopping-cart"></i> Forms</a>
+        <a href="form.html"><i class="fa fa-shopping-cart"></i> Forms</a>
         <a href="tables.html"><i class="fa fa-shopping-bag"></i> Tables</a>
       </div>
       <div class="content">
@@ -35,176 +34,44 @@
           <div class="section-container">
             <div class="section-header">Enter product details</div>
             <div class="section-content">
-              <form id="productForm" action="">
+              <form action="">
                 <label class="label" for="product">Product Name</label>
-                <input type="text" id="product" name="product" />
-                <div class="error-message" id="productError">Product name must be between 5 and 50 characters</div>
-                
+                <input type="text" id="product" /><br />
                 <label class="label" for="price">Price</label>
-                <input type="number" id="price" name="price" step="0.01" />
-                <div class="error-message" id="priceError">Price must be greater than 0</div>
-                
-                <label class="label" for="quantity">Quantity</label>
+                <input type="number" id="price" /><br />
+                <label class="label" for="category">Quantity</label>
                 <input name="quantity" id="quantity" type="number" />
-                <div class="error-message" id="quantityError">Quantity must be greater than 0</d            
                 <label class="label" for="description">Description</label>
                 <textarea rows="6" name="description" id="description"></textarea>
-                <div class="error-message" id="descriptionError">Description must be between 5 and 200 characters</div>
-                
                 <button class="form-button" id="save">Save</button>
               </form>
             </div>
           </div>
         </div>
-        <div class="right">
-          
-        </div>
+        <div class="right"></div>
       </div>
     </div>
-    
-    
     <div id="myModal" class="modal">
       <div class="modal-content">
-        <span class="close" id="closeModal">&times;</span>
-        <h3 id="modalTitle">Message</h3>
-        <p id="modalMessage">Edit me for success and error messages</p>
+        <span class="close" id="span">&times;</span>
+        <h3>Message</h3>
+        <p>Edit me for success and error messages</p>
       </div>
     </div>
-    
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="forms.js"></script>
     <script>
-      $(document).ready(() => {
+      $("document").ready(() => {
 
-        $("#toggle-nav").click(() => {
-          $("#sidebar").toggle();
-        });
-        
-    
         $("#save").click((e) => {
           e.preventDefault();
-          
-        
-          $(".error-message").hide();
-          $("input, textarea").removeClass("error");
-          
-          let isValid = true;
-          
-          
-          const productName = $("#product").val().trim();
-          if (productName.length < 5 || productName.length > 50) {
-            $("#productError").show();
-            $("#product").addClass("error");
-            isValid = false;
-          }
-          
-        
-          const price = parseFloat($("#price").val());
-          if (isNaN(price) || price <= 0) {
-            $("#priceError").show();
-            $("#price").addClass("error");
-            isValid = false;
-          }
-          
-
-          const quantity = parseFloat($("#quantity").val());
-          if (isNaN(quantity) || quantity <= 0) {
-            $("#quantityError").show();
-            $("#quantity").addClass("error");
-            isValid = false;
-          }
-          
-        
-          const description = $("#description").val().trim();
-          if (description.length < 5 || description.length > 200) {
-            $("#descriptionError").show();
-            $("#description").addClass("error");
-            isValid = false;
-          }
-          
-          if (isValid) {
-            
-            const formData = {
-              name: productName,
-              price: price,
-              quantity: quantity,
-              description: description
-            };
-            
-            
-            console.log("Form data to be submitted:", formData);
-            
-            
-            simulateAPICall(formData)
-              .then(response => {
-                
-                showModal("Success", response.message, "success");
-                
-                
-                $("#productForm")[0].reset();
-              })
-              .catch(error => {
-
-                showModal("Error", error.message, "error");
-              });
-          } else {
-            
-            showModal("Validation Error", "Edit me for success.", "error");
-          }
+          $("#myModal").css("display", "block");
         });
-        
-        
-        $("#closeModal").click(() => {
-          $("#myModal").hide();
-        });
-        
-    
-        $(window).click((e) => {
-          if (e.target.id === "myModal") {
-            $("#myModal").hide();
-          }
-        });
-        
-        
-        function showModal(title, message, type) {
-          $("#modalTitle").text(title);
-          $("#modalMessage").text(message);
-          
-          $("#modalTitle").removeClass("success error");
-          $("#modalMessage").removeClass("success error");
-          
 
-          if (type === "success") {
-            $("#modalTitle").addClass("success");
-            $("#modalMessage").addClass("success");
-          } else if (type === "error") {
-            $("#modalTitle").addClass("error");
-            $("#modalMessage").addClass("error");
-          }
-          
-          $("#myModal").show();
-        }
-        
-    
-        function simulateAPICall(formData) {
-          return new Promise((resolve, reject) => {
-        
-            setTimeout(() => {
-              
-              const isSuccess = Math.random() > 0.1;
-              
-              if (isSuccess) {
-                resolve({
-                  message: "Product saved successfully!",
-                  data: formData
-                });
-              } else {
-                reject({
-                  message: "Failed to save product. Please try again."
-                });
-              }
-            }, 1000);
-          });
-        }
+        $("#span").click((e) => {
+          e.preventDefault();
+          $("#myModal").css("display", "none");
+        });
       });
     </script>
   </body>
