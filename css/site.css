@@ -343,7 +343,7 @@ td {
     transform: rotate(360deg);
   }
 }
-/* Responsive sidebar */
+/* task 1 */
 @media screen and (max-width: 768px) {
 .sidebar {
     transform: translateX(-100%);
